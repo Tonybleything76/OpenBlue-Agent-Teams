@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+header {
+  background: linear-gradient(to right, #04155c, #0058c6);
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.card h2 {
+  font-size: 1rem;
+  color: #0058c6;
+  margin-bottom: 0.5rem;
+}
+
+.status-ok {
+  color: #3cb371;
+  font-weight: bold;
+}
+
+.status-alert {
+  color: #ff4136;
+  font-weight: bold;
+}
+
+.status-neutral {
+  color: #0074d9;
+  font-weight: normal;
+}
