@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>OpenBlue Agent Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
+  <header>
+  <img src="logo.png" alt="Logo" style="height: 40px; vertical-align: middle; margin-right: 10px;">
+  OpenBlue | Agent Dashboard
+</header>
   <div class="card">
   <h2>Cooling Load Over Time</h2>
   <canvas id="coolingChart" height="100"></canvas>
 </div>
-
 <script>
   const ctx = document.getElementById('coolingChart').getContext('2d');
   new Chart(ctx, {
