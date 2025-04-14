@@ -1,0 +1,32 @@
+{
+  "scenario": "Cold Snap Event",
+  "timestamp_start": "2025-04-13T03:00:00Z",
+  "temperature_drop": "-10°C",
+  "duration": "2h",
+  "trigger_condition": {
+    "sensor": "OA-TEMP",
+    "threshold": "Δ-10°C/2h"
+  },
+  "response_window": "30s",
+  "activated_agents": ["Chiller3", "Thermosynergix"],
+  "actions_taken": [
+    {
+      "agent": "Thermosynergix",
+      "action": "redistribute_load",
+      "target": "NorthWing",
+      "delta": -1.2
+    },
+    {
+      "agent": "Chiller3",
+      "action": "reduce_chiller_speed",
+      "delta": -0.8
+    }
+  ],
+  "zone_temperatures": {
+    "before": 21.4,
+    "after": 21.0,
+    "tolerance": "±0.5°C"
+  },
+  "status": "Success",
+  "notes": "Response completed in 24s. Zone temps stabilized."
+}
