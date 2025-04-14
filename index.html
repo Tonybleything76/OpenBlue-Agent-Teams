@@ -4,7 +4,35 @@
     <meta charset="UTF-8" />
     <title>OpenBlue Agent Dashboard</title>
     <link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
+  <div class="card">
+  <h2>Cooling Load Over Time</h2>
+  <canvas id="coolingChart" height="100"></canvas>
+</div>
+
+<script>
+  const ctx = document.getElementById('coolingChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      datasets: [{
+        label: 'Cooling Load (kW)',
+        data: [320, 400, 290, 500, 420],
+        backgroundColor: '#0074d9'
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
   <body>
     <header>OpenBlue | Agent Dashboard</header>
     <div class="container">
