@@ -3,21 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <title>OpenBlue Agent Dashboard</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        padding: 2rem;
-        background: #f5f7fa;
-        color: #222;
-      }
-      h1 {
-        color: #0366d6;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>✅ OpenBlue Agent Dashboard Is Live!</h1>
-    <p>This is a placeholder page for your Manus AI-powered energy demo.</p>
-    <p>You can update this with full React output later.</p>
+    <header>OpenBlue | Agent Dashboard</header>
+    <div class="container">
+      <div class="card">
+        <h2>Zone A – Temp Control</h2>
+        <p>Status: <span class="status-ok">Stable</span></p>
+        <p>Temp: 21.2°C (within ±0.5°C)</p>
+      </div>
+      <div class="card">
+        <h2>Zone B – Cooling Load</h2>
+        <p>Status: <span class="status-alert">Overload</span></p>
+        <p>Cooling Demand: 142%</p>
+      </div>
+      <div class="card">
+        <h2>Fault Detection</h2>
+        <p>Status: <span class="status-neutral">No anomalies</span></p>
+        <p>Last checked: 2 minutes ago</p>
+      </div>
+      <div class="card">
+        <h2>Agent Sync</h2>
+        <p>Status: <span class="status-ok">RAFT quorum achieved</span></p>
+        <p>Consensus threshold: 66%</p>
+      </div>
+    </div>
   </body>
 </html>
+
