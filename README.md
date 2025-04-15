@@ -68,7 +68,6 @@ docker run -p 3000:3000 energy-agent-ui
 ---
 
 ## 📬 Credits
-Created with the help of **Manus AI**  
-Maintained by **Tonybleything76**
+Created and Maintained by **Tonybleything76**
 
 For support, collaboration, or presentation materials, check out the summary PDF or reach out via GitHub.
