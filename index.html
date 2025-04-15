@@ -17,6 +17,7 @@
         <h2>Zone A – Temp Control</h2>
         <p>Status: <span class="status-ok">Stable</span></p>
         <p>Temp: <span id="zoneA-temp">21.2°C</span> (within ±0.5°C)</p>
+        <input type="range" id="tempSlider" min="18" max="26" step="0.1" value="21.2" style="width:100%;">
       </div>
 
       <div class="card" id="card-zoneB">
@@ -35,6 +36,8 @@
         <h2>Agent Sync</h2>
         <p>Status: <span class="status-ok">RAFT quorum achieved</span></p>
         <p>Consensus threshold: 66%</p>
+        <button onclick="simulateAlert('zoneB')">Simulate Zone B Overload</button>
+        <button onclick="simulateAlert('fault')">Simulate Fault</button>
       </div>
 
       <div class="card" style="grid-column: span 2;">
@@ -44,48 +47,59 @@
     </div>
 
     <script>
-      // Hosted alert sound (no upload needed)
       const alertSound = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_d7367d6de1.mp3");
+      let tempValue = 21.2;
+      let timeLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+      let loadValues = [320, 400, 290, 500, 420];
 
-      // Chart.js setup
       const ctx = document.getElementById('coolingChart').getContext('2d');
       const coolingChart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          labels: [...timeLabels],
           datasets: [{
             label: 'Cooling Load (kW)',
-            data: [320, 400, 290, 500, 420],
+            data: [...loadValues],
             backgroundColor: '#0074d9'
           }]
         },
         options: {
           scales: {
-            y: {
-              beginAtZero: true
-            }
+            y: { beginAtZero: true }
           }
         }
       });
 
-      // Flash card background temporarily
       function flashCard(cardId) {
         const card = document.getElementById(cardId);
         if (card) {
           card.style.transition = "background-color 0.3s";
           card.style.backgroundColor = "#ffe6e6";
-          setTimeout(() => {
-            card.style.backgroundColor = "white";
-          }, 600);
+          setTimeout(() => card.style.backgroundColor = "white", 600);
+        }
+      }
+
+      function simulateAlert(type) {
+        if (type === 'zoneB') {
+          alertSound.play();
+          document.getElementById('zoneB-status').innerText = 'Overload';
+          document.getElementById('zoneB-status').className = 'status-alert';
+          document.getElementById('zoneB-demand').innerText = '155%';
+          flashCard('card-zoneB');
+        } else if (type === 'fault') {
+          alertSound.play();
+          document.getElementById('fault-status').innerText = '⚠️ Anomaly Detected';
+          document.getElementById('fault-status').className = 'status-alert';
+          flashCard('card-fault');
         }
       }
 
       function updateDashboard() {
-        // Zone A temp
-        const temp = (20 + Math.random() * 2).toFixed(1);
-        document.getElementById('zoneA-temp').innerText = `${temp}°C`;
+        // Update Zone A Temp from slider
+        tempValue = document.getElementById('tempSlider').value;
+        document.getElementById('zoneA-temp').innerText = `${tempValue}°C`;
 
-        // Zone B status
+        // Random overload status
         const overload = Math.random() < 0.3;
         const statusText = document.getElementById('zoneB-status');
         const demandText = document.getElementById('zoneB-demand');
@@ -107,17 +121,26 @@
         const faultText = document.getElementById('fault-status');
         faultText.innerText = fault ? '⚠️ Anomaly Detected' : 'No anomalies';
         faultText.className = fault ? 'status-alert' : 'status-neutral';
-
         if (fault) {
           alertSound.play();
           flashCard("card-fault");
         }
 
+        // Update chart with a new point
+        const nextLabel = `+${coolingChart.data.labels.length}`;
+        const nextValue = Math.floor(Math.random() * 100 + 300);
+        coolingChart.data.labels.push(nextLabel);
+        coolingChart.data.datasets[0].data.push(nextValue);
+        if (coolingChart.data.labels.length > 10) {
+          coolingChart.data.labels.shift();
+          coolingChart.data.datasets[0].data.shift();
+        }
+        coolingChart.update();
+
         // Update last checked
         document.getElementById('last-checked').innerText = 'Just now';
       }
 
-      // Run every 5 seconds
       setInterval(updateDashboard, 5000);
     </script>
   </body>
