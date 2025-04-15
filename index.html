@@ -19,13 +19,13 @@
         <p>Temp: <span id="zoneA-temp">21.2°C</span> (within ±0.5°C)</p>
       </div>
 
-      <div class="card">
+      <div class="card" id="card-zoneB">
         <h2>Zone B – Cooling Load</h2>
         <p>Status: <span id="zoneB-status" class="status-alert">Overload</span></p>
         <p>Cooling Demand: <span id="zoneB-demand">142%</span></p>
       </div>
 
-      <div class="card">
+      <div class="card" id="card-fault">
         <h2>Fault Detection</h2>
         <p>Status: <span id="fault-status" class="status-neutral">No anomalies</span></p>
         <p>Last checked: <span id="last-checked">2 minutes ago</span></p>
@@ -44,7 +44,10 @@
     </div>
 
     <script>
-      // Initialize chart
+      // Hosted alert sound (no upload needed)
+      const alertSound = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_d7367d6de1.mp3");
+
+      // Chart.js setup
       const ctx = document.getElementById('coolingChart').getContext('2d');
       const coolingChart = new Chart(ctx, {
         type: 'bar',
@@ -65,7 +68,18 @@
         }
       });
 
-      // Simulate live updates
+      // Flash card background temporarily
+      function flashCard(cardId) {
+        const card = document.getElementById(cardId);
+        if (card) {
+          card.style.transition = "background-color 0.3s";
+          card.style.backgroundColor = "#ffe6e6";
+          setTimeout(() => {
+            card.style.backgroundColor = "white";
+          }, 600);
+        }
+      }
+
       function updateDashboard() {
         // Zone A temp
         const temp = (20 + Math.random() * 2).toFixed(1);
@@ -80,6 +94,8 @@
           statusText.innerText = 'Overload';
           statusText.className = 'status-alert';
           demandText.innerText = `${Math.floor(Math.random() * 50 + 130)}%`;
+          alertSound.play();
+          flashCard("card-zoneB");
         } else {
           statusText.innerText = 'Normal';
           statusText.className = 'status-ok';
@@ -92,10 +108,16 @@
         faultText.innerText = fault ? '⚠️ Anomaly Detected' : 'No anomalies';
         faultText.className = fault ? 'status-alert' : 'status-neutral';
 
-        // Update last checked time
+        if (fault) {
+          alertSound.play();
+          flashCard("card-fault");
+        }
+
+        // Update last checked
         document.getElementById('last-checked').innerText = 'Just now';
       }
 
+      // Run every 5 seconds
       setInterval(updateDashboard, 5000);
     </script>
   </body>
