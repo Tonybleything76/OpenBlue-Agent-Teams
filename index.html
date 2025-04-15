@@ -1,58 +1,102 @@
 <!DOCTYPE html>
 <html>
-  <header>
-  <img src="logo.png" alt="Logo" style="height: 40px; vertical-align: middle; margin-right: 10px;">
-  OpenBlue | Agent Dashboard
-</header>
-  <div class="card">
-  <h2>Cooling Load Over Time</h2>
-  <canvas id="coolingChart" height="100"></canvas>
-</div>
-<script>
-  const ctx = document.getElementById('coolingChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-      datasets: [{
-        label: 'Cooling Load (kW)',
-        data: [320, 400, 290, 500, 420],
-        backgroundColor: '#0074d9'
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
-
+  <head>
+    <meta charset="UTF-8" />
+    <title>OpenBlue Agent Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
   <body>
-    <header>OpenBlue | Agent Dashboard</header>
+    <header>
+      <img src="logo.png" alt="Logo" style="height: 40px; vertical-align: middle; margin-right: 10px;">
+      OpenBlue | Agent Dashboard
+    </header>
+
     <div class="container">
       <div class="card">
         <h2>Zone A – Temp Control</h2>
         <p>Status: <span class="status-ok">Stable</span></p>
-        <p>Temp: 21.2°C (within ±0.5°C)</p>
+        <p>Temp: <span id="zoneA-temp">21.2°C</span> (within ±0.5°C)</p>
       </div>
+
       <div class="card">
         <h2>Zone B – Cooling Load</h2>
-        <p>Status: <span class="status-alert">Overload</span></p>
-        <p>Cooling Demand: 142%</p>
+        <p>Status: <span id="zoneB-status" class="status-alert">Overload</span></p>
+        <p>Cooling Demand: <span id="zoneB-demand">142%</span></p>
       </div>
+
       <div class="card">
         <h2>Fault Detection</h2>
-        <p>Status: <span class="status-neutral">No anomalies</span></p>
-        <p>Last checked: 2 minutes ago</p>
+        <p>Status: <span id="fault-status" class="status-neutral">No anomalies</span></p>
+        <p>Last checked: <span id="last-checked">2 minutes ago</span></p>
       </div>
+
       <div class="card">
         <h2>Agent Sync</h2>
         <p>Status: <span class="status-ok">RAFT quorum achieved</span></p>
         <p>Consensus threshold: 66%</p>
       </div>
+
+      <div class="card" style="grid-column: span 2;">
+        <h2>Cooling Load Over Time</h2>
+        <canvas id="coolingChart" height="100"></canvas>
+      </div>
     </div>
+
+    <script>
+      // Initialize chart
+      const ctx = document.getElementById('coolingChart').getContext('2d');
+      const coolingChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          datasets: [{
+            label: 'Cooling Load (kW)',
+            data: [320, 400, 290, 500, 420],
+            backgroundColor: '#0074d9'
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Simulate live updates
+      function updateDashboard() {
+        // Zone A temp
+        const temp = (20 + Math.random() * 2).toFixed(1);
+        document.getElementById('zoneA-temp').innerText = `${temp}°C`;
+
+        // Zone B status
+        const overload = Math.random() < 0.3;
+        const statusText = document.getElementById('zoneB-status');
+        const demandText = document.getElementById('zoneB-demand');
+
+        if (overload) {
+          statusText.innerText = 'Overload';
+          statusText.className = 'status-alert';
+          demandText.innerText = `${Math.floor(Math.random() * 50 + 130)}%`;
+        } else {
+          statusText.innerText = 'Normal';
+          statusText.className = 'status-ok';
+          demandText.innerText = `${Math.floor(Math.random() * 40 + 80)}%`;
+        }
+
+        // Fault detection
+        const fault = Math.random() < 0.1;
+        const faultText = document.getElementById('fault-status');
+        faultText.innerText = fault ? '⚠️ Anomaly Detected' : 'No anomalies';
+        faultText.className = fault ? 'status-alert' : 'status-neutral';
+
+        // Update last checked time
+        document.getElementById('last-checked').innerText = 'Just now';
+      }
+
+      setInterval(updateDashboard, 5000);
+    </script>
   </body>
 </html>
