@@ -6,6 +6,7 @@ Built by **Tonybleything76** using Manus AI for integration with **Johnson Contr
 ---
 
 ## 🌐 Live Dashboard
+📄 [Download Dashboard Summary (PDF)](OpenBlue_Dashboard_Summary.pdf)
 👉 [View the Demo](https://tonybleything76.github.io/OpenBlue-Agent-Teams/)
 
 ---
